@@ -11,6 +11,12 @@ lang: ''
 
 测试评论/图图
 
+mk
+![avatar.jpg](https://blogp-1316008028.cos.ap-nanjing.myqcloud.com/avatar.jpg)
+
+<img src="https://blogp-1316008028.cos.ap-nanjing.myqcloud.com/avatar.jpg" alt="avatar.jpg"/>
+
+url：https://blogp-1316008028.cos.ap-nanjing.myqcloud.com/avatar.jpg
 <!-- giscus评论 -->
 <script src="https://giscus.app/client.js"
         data-repo="anfevs/giscus"
