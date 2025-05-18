@@ -35,14 +35,17 @@ export const siteConfig: SiteConfig = {
 		//   theme: 'light',              // (Optional) Either 'light' or 'dark', set only if you have different favicons for light and dark mode
 		//   sizes: '32x32',              // (Optional) Size of the favicon, set only if you have favicons of different sizes
 		// }
+	
 	],
 };
 
+  
 export const navBarConfig: NavBarConfig = {
 	links: [
 		LinkPreset.Home,
 		LinkPreset.Archive,
 		LinkPreset.About,
+		LinkPreset.Friends,  
 		{
 			name: "GitHub",
 			url: "https://github.com/anfevs", // Internal links should not include the base path, as it is automatically added
@@ -72,6 +75,11 @@ export const profileConfig: ProfileConfig = {
 			icon: "fa6-brands:qq",
 			url: "https://qm.qq.com/q/9Cd8uLxCLK",
 		},
+//		{
+//			name: "email",
+//			icon: "fa6-solid:envelope",
+//			url: "https://qm.qq.com/q/9Cd8uLxCLK",
+//		},
 	],
 };
 
