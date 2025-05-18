@@ -1,9 +1,6 @@
-# About
-This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
+# 关于页面
+>不会写东西
 
-::github{repo="saicaca/fuwari"}
+ 这里是溪午 没有特殊的英文名 所以你也可以叫我的拼音“xiwu”
 
-> ### Sources of images used in this site
-> - [Unsplash](https://unsplash.com/)
-> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
-> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+ 来自中国江苏
