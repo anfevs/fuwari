@@ -1,12 +1,12 @@
 ---
-
-import MainGridLayout from "../layouts/MainGridLayout.astro";
-
 import { getEntry } from "astro:content";
 import { render } from "astro:content";
+import { string } from "astro:schema";
 import Markdown from "@components/misc/Markdown.astro";
+import axios from "axios";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
 
 const aboutPost = await getEntry("spec", "about");
 
@@ -15,14 +15,110 @@ if (!aboutPost) {
 }
 
 const { Content } = await render(aboutPost);
+
+// 配置axios实例
+const api = axios.create({
+	baseURL: "https://api.steampowered.com",
+	timeout: 30000, // 30秒超时
+	headers: {
+		"User-Agent":
+			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+		Accept: "application/json",
+		"Accept-Encoding": "gzip, deflate, br",
+	},
+});
+
+
+const response = await api.get("/IPlayerService/GetRecentlyPlayedGames/v1/", {
+	params: {
+		key: import.meta.env.PUBLIC_STEAM_API_KEY,
+		steamid: "76561199185448425",
+		format: "json",
+	},
+	responseType: "json",
+});
+
+interface Game {
+	name: string;
+	appid: number;
+	playtime_2weeks: number;
+	img_icon_url: string;
+}
+
+const gameList = response.data.response.games.map((game: Game) => ({
+	name: game.name,
+	appid: game.appid,
+	playtime: game.playtime_2weeks.toString(),
+	img_icon_url: game.img_icon_url,
+}));
+
+function getSteamIconUrl(appId: string, img_icon_url: string) {
+	return `https://media.steampowered.com/steamcommunity/public/images/apps/${appId}/${img_icon_url}.jpg`;
+}
+
+function getSteamGameUrl(appId: string) {
+	return `https://store.steampowered.com/app/${appId}`;
+}
+
+function getPlaytime(playtime: number) {
+	return `近期时长: ${(playtime / 60).toFixed(2)} 小时`;
+}
 ---
 <MainGridLayout title={i18n(I18nKey.about)} description={i18n(I18nKey.about)}>
-    <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
-        <div class="card-base z-10 px-9 py-6 relative w-full ">
-            <Markdown class="mt-2">
+    <div class="w-full">
+        <!-- 关于内容部分 -->
+        <div class="card-base rounded-[var(--radius-large)] overflow-hidden mb-8">
+            <Markdown class="p-9">
                 <Content />
             </Markdown>
         </div>
-    </div>
 
+        <!-- 游戏列表部分 -->
+        <div class="space-y-6 px-9">
+            <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">近期游戏</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {gameList.map((game) => ( 
+                    <div class="card-base p-4 rounded-[var(--radius-large)] h-full">
+                        <div class="flex flex-nowrap items-stretch h-28 gap-4 rounded-[var(--radius-large)]">
+                            <div class="w-24 h-24 flex-shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-zinc-100 to-zinc-300 dark:from-zinc-800 dark:to-zinc-900 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                <img 
+                                    src={getSteamIconUrl(game.appid, game.img_icon_url)} 
+                                    alt={game.name}
+                                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                    loading="lazy"
+                                >
+                            </div>                   
+                            <!-- 游戏信息 -->
+                            <div class="grow flex flex-col justify-between">
+                                <div>
+                                    <div class="font-bold text-base text-neutral-900 dark:text-neutral-100 mb-1 line-clamp-2">
+                                        {game.name}
+                                    </div>
+                                    <div class="text-50 text-sm font-medium">
+                                        {getPlaytime(parseInt(game.playtime))}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 跳转按钮 -->
+                            <a 
+                                href={getSteamGameUrl(game.appid)} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-[var(--enter-btn-bg)] hover:bg-[var(--enter-btn-bg-hover)] active:bg-[var(--enter-btn-bg-active)] active:scale-95 transition-transform"
+                                title="查看游戏"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                     class="text-[var(--primary)] text-xl" 
+                                     width="1em" 
+                                     height="1em" 
+                                     viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M12.6 12L8.7 8.1q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.6 4.6q.15.15.213.325t.062.375t-.062.375t-.213.325l-4.6 4.6q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7z"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
 </MainGridLayout>
