@@ -31,7 +31,7 @@ const api = axios.create({
 
 const response = await api.get("/IPlayerService/GetRecentlyPlayedGames/v1/", {
 	params: {
-		key: import.meta.env.PUBLIC_STEAM_API_KEY,
+		key: import.meta.env.STEAM_API_KEY,
 		steamid: "76561199185448425",
 		format: "json",
 	},
