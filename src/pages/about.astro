@@ -38,7 +38,7 @@ try {
     responseType: "json",
   });
 
-  gameList = response.data.response.games.map((game) => ({
+  gameList = response.data.response.games.map((game: { name: string; appid: string; playtime_2weeks: number; img_icon_url: string }) => ({
     name: game.name,
     appid: game.appid,
     playtime: game.playtime_2weeks.toString(),
@@ -73,7 +73,7 @@ function getPlaytime(playtime: number) {
         <div class="space-y-6 px-9">
             <h2 class="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">近期游戏</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {gameList.map((game) => ( 
+                {gameList.map((game: { name: string; appid: string; playtime: string; img_icon_url: string }) => (
                     <div class="card-base p-4 rounded-[var(--radius-large)] h-full">
                         <div class="flex flex-nowrap items-stretch h-28 gap-4 rounded-[var(--radius-large)]">
                             <div class="w-24 h-24 flex-shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-zinc-100 to-zinc-300 dark:from-zinc-800 dark:to-zinc-900 shadow-sm hover:shadow-md transition-shadow duration-200">
