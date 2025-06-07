@@ -1,12 +1,11 @@
 ---
 import { getEntry } from "astro:content";
 import { render } from "astro:content";
-import { string } from "astro:schema";
 import Markdown from "@components/misc/Markdown.astro";
-import axios from "axios";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
+import axios from 'axios';
 
 const aboutPost = await getEntry("spec", "about");
 
@@ -16,41 +15,38 @@ if (!aboutPost) {
 
 const { Content } = await render(aboutPost);
 
-// 配置axios实例
-const api = axios.create({
-	baseURL: "https://api.steampowered.com",
-	timeout: 30000, // 30秒超时
-	headers: {
-		"User-Agent":
-			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-		Accept: "application/json",
-		"Accept-Encoding": "gzip, deflate, br",
-	},
-});
+// 直接从Steam API获取数据
+let gameList = [];
 
+try {
+  const api = axios.create({
+    baseURL: "https://api.steampowered.com",
+    timeout: 30000,
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+      Accept: "application/json",
+      "Accept-Encoding": "gzip, deflate, br",
+    },
+  });
 
-const response = await api.get("/IPlayerService/GetRecentlyPlayedGames/v1/", {
-	params: {
-		key: import.meta.env.STEAM_API_KEY,
-		steamid: "76561199185448425",
-		format: "json",
-	},
-	responseType: "json",
-});
+  const response = await api.get("/IPlayerService/GetRecentlyPlayedGames/v1/", {
+    params: {
+      key: import.meta.env.STEAM_API_KEY,
+      steamid: "76561199185448425",
+      format: "json",
+    },
+    responseType: "json",
+  });
 
-interface Game {
-	name: string;
-	appid: number;
-	playtime_2weeks: number;
-	img_icon_url: string;
+  gameList = response.data.response.games.map((game) => ({
+    name: game.name,
+    appid: game.appid,
+    playtime: game.playtime_2weeks.toString(),
+    img_icon_url: game.img_icon_url,
+  }));
+} catch (error) {
+  console.error('Error fetching Steam data:', error);
 }
-
-const gameList = response.data.response.games.map((game: Game) => ({
-	name: game.name,
-	appid: game.appid,
-	playtime: game.playtime_2weeks.toString(),
-	img_icon_url: game.img_icon_url,
-}));
 
 function getSteamIconUrl(appId: string, img_icon_url: string) {
 	return `https://media.steampowered.com/steamcommunity/public/images/apps/${appId}/${img_icon_url}.jpg`;
