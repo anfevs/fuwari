@@ -24,6 +24,8 @@ lang: ''
 
 # mod解释
 
+TweakMyClient
+
 AppleSkin苹果皮-提供更好的饱食度HUD显示效果（服务端可选）
 
 Bedrodium移除基岩的不可见侧面进行细小的优化
@@ -279,4 +281,5 @@ itemoretica投影
 	<li>libIPN [6.5.1]</li>
 	<li>litemoretica [1.2.5+mc1.21.1]</li>
 	<li>takeneko-carpet-addition-all-0.5.1.jar.duplicate</li>
+    <li>TweakMyClient</li>
 </ul></body></html>
