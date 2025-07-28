@@ -12,11 +12,10 @@ lang: ''
 # 为什么会有这个modspack
 ### 因RS    https://realityspace.mysxl.cn/ 进行版本升级（1.21.1）故基于RS-1.20.4官方包进行modspack的制作,同时优化一些mod以确保可以正常使用（精简版）
 :::note
->仅保证个人使用
 
->材质光影翻译暂缺 
+材质光影翻译暂缺 
 
->导出格式为CurseForge整合
+导出格式为CurseForge整合
 :::
 
 下载链接：https://wwww.lanzoue.com/iw8UW320biqb
