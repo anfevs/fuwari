@@ -18,7 +18,7 @@ lang: ''
 导出格式为CurseForge整合
 :::
 
-下载链接：https://wwww.lanzoue.com/iw8UW320biqb
+下载链接：https://wwww.lanzoue.com/iyjgu322bdcj
 
 
 # mod解释
@@ -43,7 +43,6 @@ CIT Resewn-添加CIT实现
 <li>Carpet Mod [1.4.147+v240613]</li>
 <li>takeneko-carpet-addition-all-0.5.1.jar.duplicate</li>
 <li>gugle-carpet-addition [2.10.0+build.23]</li>
-
 
 Chat Heads-聊天头像-添加一个皮肤头像在聊天栏
 
